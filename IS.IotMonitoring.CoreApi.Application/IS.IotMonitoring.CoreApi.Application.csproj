@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IS.IotMonitoring.CoreApi.Domain\IS.IotMonitoring.CoreApi.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -14,4 +14,10 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IS.IotMonitoring.CoreApi.Domain\IS.IotMonitoring.CoreApi.Domain.csproj" />
+    <ProjectReference Include="..\IS.IotMonitoring.CoreApi.Application\IS.IotMonitoring.CoreApi.Application.csproj" />
+    <ProjectReference Include="..\IS.IotMonitoring.CoreApi.Infrastructure\IS.IotMonitoring.CoreApi.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

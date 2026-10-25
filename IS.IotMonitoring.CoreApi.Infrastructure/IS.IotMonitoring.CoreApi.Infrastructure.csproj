@@ -1,5 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\IS.IotMonitoring.CoreApi.Domain\IS.IotMonitoring.CoreApi.Domain.csproj" />
+    <ProjectReference Include="..\IS.IotMonitoring.CoreApi.Application\IS.IotMonitoring.CoreApi.Application.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
