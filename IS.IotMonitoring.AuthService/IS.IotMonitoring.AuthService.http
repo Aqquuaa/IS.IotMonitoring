@@ -1,6 +1,21 @@
 @IS.IotMonitoring.AuthService_HostAddress = http://localhost:5228
 
-GET {{IS.IotMonitoring.AuthService_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{IS.IotMonitoring.AuthService_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "operator",
+  "password": "Operator123!"
+}
+
+###
+
+POST {{IS.IotMonitoring.AuthService_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "Admin12345!"
+}
 
 ###
