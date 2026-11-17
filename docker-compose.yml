@@ -1,0 +1,27 @@
+services:
+  mongodb:
+    image: mongo:9.0
+    container_name: IS_IotMonitoring_Mongodb
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - mongo_data:/data/db
+
+  postgresql:
+    image: postgres:18
+    container_name: IS_IotMonitoring_PostgreSQL
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgresql_backend
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
+  mongo_data:

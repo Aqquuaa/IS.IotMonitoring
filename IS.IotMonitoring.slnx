@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/infrastructure/">
+    <File Path="docker-compose.yml" />
+  </Folder>
   <Project Path="IS.IotMonitoring.AuthService/IS.IotMonitoring.AuthService.csproj" Id="1c242c19-173d-4e6d-9fee-11b8992ce553" />
   <Project Path="IS.IotMonitoring.CoreApi.Application/IS.IotMonitoring.CoreApi.Application.csproj" Id="2c8e3295-3030-4a58-86f1-08d06f498005" />
   <Project Path="IS.IotMonitoring.CoreApi.Domain/IS.IotMonitoring.CoreApi.Domain.csproj" Id="d49ed140-051b-4aaf-af62-88649f577109" />

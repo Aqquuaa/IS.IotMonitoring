@@ -13,15 +13,15 @@ namespace IS.IotMonitoring.CoreApi.Application.Services
             this.telemetryRepository = telemetryRepository;
             this.deviceRepository = deviceRepository;
         }
-        public async Task<Result<IReadOnlyCollection<TelemetryResponseDto>>> GetDeviceTelemetry(Guid deviceId, DateTimeOffset? from = null, DateTimeOffset? to = null)
+        public async Task<Result<IAsyncEnumerable<TelemetryResponseDto>>> GetDeviceTelemetry(Guid deviceId, DateTimeOffset? from = null, DateTimeOffset? to = null)
         {
             var device = await deviceRepository.GetByIdAsync(deviceId);
             if (device is null)
                 return Error.NotFound($"Device '{deviceId}' was not found.");
 
-            var readings = await telemetryRepository.GetByDeviceIdAsync(deviceId, from, to);
+            var readings = telemetryRepository.GetByDeviceIdAsync(deviceId, from, to);
 
-            return readings.Select(t => TelemetryResponseDto.From(t)).ToList();
+            return Result.Success(StreamTelemetry(deviceId, from, to));
         }
 
         public async Task<Result> RecordTelemetry(RecordTelemetryRequest request)
@@ -36,6 +36,13 @@ namespace IS.IotMonitoring.CoreApi.Application.Services
             await deviceRepository.UpdateAsync(device);
 
             return Result.Success();
+        }
+        private async IAsyncEnumerable<TelemetryResponseDto> StreamTelemetry(Guid deviceId, DateTimeOffset? from, DateTimeOffset? to)
+        {
+            await foreach (var reading in telemetryRepository.GetByDeviceIdAsync(deviceId, from, to))
+            {
+                yield return TelemetryResponseDto.From(reading);
+            }
         }
     }
 }

@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
+    <PackageReference Include="MongoDB.Driver" Version="3.13.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\IS.IotMonitoring.CoreApi.Domain\IS.IotMonitoring.CoreApi.Domain.csproj" />
     <ProjectReference Include="..\IS.IotMonitoring.CoreApi.Application\IS.IotMonitoring.CoreApi.Application.csproj" />
   </ItemGroup>
@@ -9,6 +15,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>d1e48dad-b422-4640-aec0-f89d1fddba3a</UserSecretsId>
   </PropertyGroup>
 
 </Project>
