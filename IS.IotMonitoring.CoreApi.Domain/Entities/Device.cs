@@ -1,4 +1,5 @@
-﻿using IS.IotMonitoring.CoreApi.Domain.Enums;
+﻿using IS.IotMonitoring.CoreApi.Domain.Common;
+using IS.IotMonitoring.CoreApi.Domain.Enums;
 
 namespace IS.IotMonitoring.CoreApi.Domain.Entities
 {
@@ -32,20 +33,22 @@ namespace IS.IotMonitoring.CoreApi.Domain.Entities
             if(Status == DeviceStatus.Offline)
                 Status = DeviceStatus.Online;
         }
-        public TelemetryReading RecordTelemetry(double reading, string unit, DateTimeOffset timestamp)
+        public Result<TelemetryReading> RecordTelemetry(double reading, string unit, DateTimeOffset timestamp)
         {
             if (Status == DeviceStatus.Deleted)
-                throw new InvalidOperationException("Cannot record telemetry for a deleted device.");
+                return Error.Conflict($"Cannot record telemetry for deleted device '{Id}'.");
 
             RecordHeartbeat();
 
             return TelemetryReading.Create(Id, reading, unit, timestamp);
         }
-        public void GoOffline()
+        public Result GoOffline()
         {
             if (Status == DeviceStatus.Deleted)
-                throw new InvalidOperationException("Device is already deleted.");
+                return Error.Conflict($"Device '{Id}' is already deleted.");
+
             Status = DeviceStatus.Offline;
+            return Result.Success();
         }
         public void Delete()
         {

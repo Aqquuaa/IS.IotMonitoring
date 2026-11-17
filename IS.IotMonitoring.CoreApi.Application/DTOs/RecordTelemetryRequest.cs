@@ -1,4 +1,10 @@
-﻿namespace IS.IotMonitoring.CoreApi.Application.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IS.IotMonitoring.CoreApi.Application.DTOs
 {
-    public record RecordTelemetryRequest(Guid DeviceId, double Reading, string Unit, DateTimeOffset Timestamp);
+    public record RecordTelemetryRequest(
+        Guid DeviceId,
+        [Required] double? Reading,
+        string Unit,
+        [Required] DateTimeOffset? Timestamp);
 }

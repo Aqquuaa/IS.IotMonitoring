@@ -30,9 +30,11 @@ namespace IS.IotMonitoring.CoreApi.Application.Services
             if (device is null)
                 return Error.NotFound($"Device '{request.DeviceId}' was not found.");
 
-            var reading = device.RecordTelemetry(request.Reading, request.Unit, request.Timestamp);
+            var recordResult = device.RecordTelemetry(request.Reading!.Value, request.Unit, request.Timestamp!.Value);
+            if (!recordResult.IsSuccess)
+                return recordResult.Error!;
 
-            await telemetryRepository.AddAsync(reading);
+            await telemetryRepository.AddAsync(recordResult.Value!);
             await deviceRepository.UpdateAsync(device);
 
             return Result.Success();
