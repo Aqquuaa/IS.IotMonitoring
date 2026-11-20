@@ -1,4 +1,5 @@
 ﻿using IS.IotMonitoring.CoreApi.Application.DTOs;
+using IS.IotMonitoring.CoreApi.Application.Metrics;
 using IS.IotMonitoring.CoreApi.Application.Repositories;
 using IS.IotMonitoring.CoreApi.Domain.Common;
 
@@ -8,10 +9,13 @@ namespace IS.IotMonitoring.CoreApi.Application.Services
     {
         private readonly ITelemetryRepository telemetryRepository;
         private readonly IDeviceRepository deviceRepository;
-        public TelemetryService(ITelemetryRepository telemetryRepository, IDeviceRepository deviceRepository)
+
+        private readonly TelemetryMetrics metrics;
+        public TelemetryService(ITelemetryRepository telemetryRepository, IDeviceRepository deviceRepository, TelemetryMetrics metrics)
         {
             this.telemetryRepository = telemetryRepository;
             this.deviceRepository = deviceRepository;
+            this.metrics = metrics;
         }
         public async Task<Result<IAsyncEnumerable<TelemetryResponseDto>>> GetDeviceTelemetry(Guid deviceId, DateTimeOffset? from = null, DateTimeOffset? to = null)
         {
@@ -37,6 +41,7 @@ namespace IS.IotMonitoring.CoreApi.Application.Services
             await telemetryRepository.AddAsync(recordResult.Value!);
             await deviceRepository.UpdateAsync(device);
 
+            metrics.RecordReading(device, request.Reading!.Value);
             return Result.Success();
         }
         private async IAsyncEnumerable<TelemetryResponseDto> StreamTelemetry(Guid deviceId, DateTimeOffset? from, DateTimeOffset? to)

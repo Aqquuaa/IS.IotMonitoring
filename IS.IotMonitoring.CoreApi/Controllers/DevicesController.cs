@@ -1,5 +1,6 @@
 ﻿using IS.IotMonitoring.CoreApi.Application.DTOs;
 using IS.IotMonitoring.CoreApi.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace IS.IotMonitoring.CoreApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DevicesController : ControllerBase
     {
         private readonly IDeviceService deviceService;
@@ -16,6 +18,7 @@ namespace IS.IotMonitoring.CoreApi.Controllers
             this.deviceService = deviceService;
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateDeviceRequest request)
         {
             var result = await deviceService.CreateDeviceAsync(request);
@@ -38,6 +41,7 @@ namespace IS.IotMonitoring.CoreApi.Controllers
             return Ok(result.Value);
         }
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await deviceService.DeleteDeviceAsync(id);

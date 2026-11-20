@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: coreapi
+    static_configs:
+      - targets: ["host.docker.internal:5151"]
+
+  - job_name: authservice
+    static_configs:
+      - targets: ["host.docker.internal:5228"]
+
+  - job_name: postgres
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+
+  - job_name: mongodb
+    static_configs:
+      - targets: ["mongodb-exporter:9216"]
