@@ -49,7 +49,7 @@ docker compose up -d --build
 4. Перевірка ролей: зареєструйте звичайного користувача (`POST /api/auth/register`, пароль від 8 символів),
 увійдіть ним і спробуйте `POST /api/devices` -> `403 Forbidden` (створювати пристрої може лише Admin).
 
-### 2. Prometheus (збір і зберігання метрик)
+### 2. Prometheus
 - http://localhost:9090/targets - усі цілі (`coreapi`, `authapi`, `postgres`, `mongodb`) мають стан **UP**.
 - Приклади запитів (вкладка **Graph**):
   - `iot_device_temperature_celsius` - температура кожного датчика в часі;
@@ -57,19 +57,19 @@ docker compose up -d --build
   - `pg_up`, `mongodb_up` - доступність СУБД;
   - `rate(http_requests_received_total[1m])` - кількість запитів за секунду.
 
-### 3. Grafana (відображення)
+### 3. Grafana)
 Увійдіть у http://localhost:3000 -> **Dashboards -> IoT**:
 - **Temperature monitoring** - графік температури з порогом 35 °C;
 - **Sensors overheating** - кількість датчиків, що зараз перегріті;
 - **High Temperature Warnings** - логи попереджень про високу температуру.
 
-### 4. Loki (логи)
+### 4. Loki
 Grafana -> **Explore** -> джерело **Loki**:
 - `{service="coreapi"}` - усі логи CoreApi;
 - `{service="coreapi"} |= "High temperature"`- лише попередження про перегрів;
 - `{service="coreapi"} | json | StatusCode >= 400` - запити з помилками.
 
-### 5. Tempo (трейси)
+### 5. Tempo
 Grafana -> **Explore** -> джерело **Tempo** -> **Search** -> Service Name `coreapi`.
 Відкрийте будь-який запит `POST api/telemetry` - видно, скільки часу зайняла обробка запиту
 і кожен SQL-запит до PostgreSQL.
