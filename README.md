@@ -32,7 +32,7 @@ docker compose up -d --build
 | AuthService (Scalar) | http://localhost:5228/scalar | `admin` / `Admin` |
 | CoreApi (Scalar) | http://localhost:5151/scalar | потрібен JWT-токен |
 | Grafana | http://localhost:3000 | `admin` / `admin` |
-| Prometheus | http://localhost:9090 | — |
+| Prometheus | http://localhost:9090 | - |
 | PostgreSQL | localhost:5433 | `postgres` / `postgres` |
 | MongoDB | localhost:27018 | `admin` / `admin` |
 
@@ -54,18 +54,18 @@ docker compose up -d --build
 - Приклади запитів (вкладка **Graph**):
   - `iot_device_temperature_celsius` - температура кожного датчика в часі;
   - `max_over_time(iot_device_temperature_celsius[10m])` - максимум за 10 хвилин;
-  - `pg_up`, `mongodb_up` — доступність СУБД;
+  - `pg_up`, `mongodb_up` - доступність СУБД;
   - `rate(http_requests_received_total[1m])` - кількість запитів за секунду.
 
 ### 3. Grafana (відображення)
 Увійдіть у http://localhost:3000 -> **Dashboards -> IoT**:
-- **Temperature monitoring** — графік температури з порогом 35 °C;
-- **Sensors overheating** — кількість датчиків, що зараз перегріті;
-- **High Temperature Warnings** — логи попереджень про високу температуру.
+- **Temperature monitoring** - графік температури з порогом 35 °C;
+- **Sensors overheating** - кількість датчиків, що зараз перегріті;
+- **High Temperature Warnings** - логи попереджень про високу температуру.
 
 ### 4. Loki (логи)
 Grafana -> **Explore** -> джерело **Loki**:
-- `{service="coreapi"}` — усі логи CoreApi;
+- `{service="coreapi"}` - усі логи CoreApi;
 - `{service="coreapi"} |= "High temperature"`- лише попередження про перегрів;
 - `{service="coreapi"} | json | StatusCode >= 400` - запити з помилками.
 
