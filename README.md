@@ -44,7 +44,7 @@ docker compose up -d --build
    { "username": "admin", "password": "Admin" }
    ```
    Скопіюйте значення `accessToken`.
-2. Відкрийте http://localhost:5151/scalar -> `GET /api/devices` → надішліть **без токена** -> `401 Unauthorized`.
+2. Відкрийте http://localhost:5151/scalar -> `GET /api/devices` -> надішліть **без токена** -> `401 Unauthorized`.
 3. На вкладці **Headers** додайте `Authorization: Bearer <токен>` і надішліть ще раз -> `200` і список датчиків.
 4. Перевірка ролей: зареєструйте звичайного користувача (`POST /api/auth/register`, пароль від 8 символів),
 увійдіть ним і спробуйте `POST /api/devices` -> `403 Forbidden` (створювати пристрої може лише Admin).
