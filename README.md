@@ -50,7 +50,7 @@ docker compose up -d --build
 увійдіть ним і спробуйте `POST /api/devices` -> `403 Forbidden` (створювати пристрої може лише Admin).
 
 ### 2. Prometheus (збір і зберігання метрик)
-- http://localhost:9090/targets - усі цілі (`coreapi`, `authservice`, `postgres`, `mongodb`) мають стан **UP**.
+- http://localhost:9090/targets - усі цілі (`coreapi`, `authapi`, `postgres`, `mongodb`) мають стан **UP**.
 - Приклади запитів (вкладка **Graph**):
   - `iot_device_temperature_celsius` - температура кожного датчика в часі;
   - `max_over_time(iot_device_temperature_celsius[10m])` - максимум за 10 хвилин;
