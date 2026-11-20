@@ -57,7 +57,7 @@ docker compose up -d --build
   - `pg_up`, `mongodb_up` - доступність СУБД;
   - `rate(http_requests_received_total[1m])` - кількість запитів за секунду.
 
-### 3. Grafana)
+### 3. Grafana
 Увійдіть у http://localhost:3000 -> **Dashboards -> IoT**:
 - **Temperature monitoring** - графік температури з порогом 35 °C;
 - **Sensors overheating** - кількість датчиків, що зараз перегріті;
