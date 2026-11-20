@@ -26,7 +26,7 @@ builder.Services.AddSerilog(logger => logger
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .WriteTo.Console()
-    .WriteTo.GrafanaLoki("http://localhost:3100",
+    .WriteTo.GrafanaLoki(builder.Configuration["Loki:Url"] ?? "http://localhost:3100",
         labels: [new LokiLabel { Key = "service", Value = "coreapi" }]));
 //SERILOG
 
@@ -37,7 +37,7 @@ builder.Services.AddOpenTelemetry()
         .AddAspNetCoreInstrumentation(options =>
             options.Filter = context => !context.Request.Path.StartsWithSegments("/metrics"))
         .AddNpgsql()
-        .AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:4317")));
+        .AddOtlpExporter(options => options.Endpoint = new Uri(builder.Configuration["Tempo:Url"] ?? "http://localhost:4317")));
 // TEMPO TRACING
 
 // JWT AUTHENTICATION (tokens issued by AuthService)

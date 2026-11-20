@@ -21,6 +21,11 @@ services:
       POSTGRES_DB: postgresql_backend
     volumes:
       - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -h localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   postgres-exporter:
     image: quay.io/prometheuscommunity/postgres-exporter:v0.17.1
@@ -63,6 +68,49 @@ services:
       - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
       - grafana_data:/var/lib/grafana
     depends_on: [prometheus, loki, tempo]
+
+  authservice:
+    build:
+      context: .
+      dockerfile: IS.IotMonitoring.AuthService/Dockerfile
+    ports: ["5228:8080"]
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Postgres: Host=postgresql;Port=5432;Database=iot_auth;Username=postgres;Password=postgres
+      Loki__Url: http://loki:3100
+      Tempo__Url: http://tempo:4317
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    restart: on-failure
+
+  coreapi:
+    build:
+      context: .
+      dockerfile: IS.IotMonitoring.CoreApi/Dockerfile
+    ports: ["5151:8080"]
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Postgres: Host=postgresql;Port=5432;Database=postgresql_backend;Username=postgres;Password=postgres
+      ConnectionStrings__MongoDb: mongodb://admin:admin@mongodb:27017
+      Loki__Url: http://loki:3100
+      Tempo__Url: http://tempo:4317
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+    restart: on-failure
+
+  datagenerator:
+    build:
+      context: .
+      dockerfile: IS.IotMonitoring.DataGenerator/Dockerfile
+    environment:
+      Generator__AuthServiceUrl: http://authservice:8080
+      Generator__CoreApiUrl: http://coreapi:8080
+    depends_on: [authservice, coreapi]
+    restart: on-failure
 
 volumes:
   pgdata:
